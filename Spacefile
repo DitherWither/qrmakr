@@ -1,0 +1,16 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: api
+    src: api
+    engine: python3.9
+    dev: uvicorn main:app --port=$PORT --reload
+  - name: frontend
+    src: frontend
+    engine: static
+    primary: true
+    dev: npm run dev -- --port=$PORT
+    commands:
+      - npm install
+      - npm run build
+    serve: dist/
