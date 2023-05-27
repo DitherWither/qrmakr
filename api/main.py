@@ -7,7 +7,7 @@ from deta import Deta
 import random
 import string
 
-app = FastAPI()
+app = FastAPI(openapi_prefix="/api", title="QrMakr API", description="A simple API for creating and managing QR codes", version="0.1.0")
 deta = Deta()
 
 drive = deta.Drive("qr_codes")
@@ -42,8 +42,10 @@ def parse_color(color: str) -> tuple[int, int, int]:
 @app.post("/")
 async def create_qr(qr_code_request: QrCodeRequest):
     """
-        We are using POST instead of GET as
-        we want to be able to use the request body
+        Create a new QR code
+
+        The color functionality is currently broken, as for some reason we are
+        always getting a black QR code.
     """
 
     qr = qrcode.QRCode(
@@ -78,12 +80,22 @@ async def create_qr(qr_code_request: QrCodeRequest):
 
 @app.get("/")
 def get_all():
+    """
+        Get all QR codes
+
+        Returns a list of all QR codes
+    """
     return db.fetch().items
 
 
-@app.get("/{name}")
-async def get_qr(name: str):
-    buf = drive.get(name)
+@app.get("/{file_name}")
+async def get_qr(file_name: str):
+    """
+        Get a QR code by file name
+
+        Returns the QR code with the given file name
+    """
+    buf = drive.get(file_name)
     if buf is None:
         return Response(content='{"detail": "Not Found"}', media_type="application/json", status_code=404)
 
@@ -93,8 +105,11 @@ async def get_qr(name: str):
     return Response(content=content, media_type="image/svg+xml")
 
 
-@app.delete("/{name}")
-def delete_qr(name: str):
-    db.delete(name)
-    drive.delete(name)
+@app.delete("/{file_name}")
+def delete_qr(file_name: str):
+    """
+        Delete a QR code by file name
+    """
+    db.delete(file_name)
+    drive.delete(file_name)
     return Response(content='{"message": "Deleted successfully"}', media_type="application/json")
