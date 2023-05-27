@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="src/style.css">
+    <script type="module" src="/src/main.ts" defer></script>
+    <title>Vite + TS</title>
+  </head>
+  <body class="bg-slate-900">
+    <h1 class="text-8xl text-yellow-300 text-center">QrMakr</h1>
+    <h2 class="text-yellow-300 text-5xl text-center m-5">
+      New Qr Code
+    </h2>
+    <form id="qrform" class="grid grid-flow-row md:grid-flow-col gap-3 m-3">
+      <!-- TODO handle getting this data from typescript -->
+      <input type="text" placeholder="Title" name="title" class="rounded-full bg-white p-3">
+      <input type="text" placeholder="Body" name="body" class="rounded-full bg-white p-3">
+      <input type="submit" value="Submit" class="bg-yellow-300 rounded-full p-4">
+    </form>
+
+    <h2 class="text-yellow-300 text-5xl text-center m-5">
+      Previous Qr Codes
+    </h2>
+    <div id="qrlist" class="grid grid-cols-1 md:grid-cols-4 gap-4 m-6">
+      <div class="flex justify-center items-center flex-col bg-slate-50 h-full p-4 rounded-2xl">
+        <p>Loading...</p>
+      </div>
+    </div>
+
+  </body>
+</html>
